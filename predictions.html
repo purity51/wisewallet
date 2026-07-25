@@ -44,6 +44,17 @@
       <div id="postMessage" style="margin-top: 8px; font-size: 13px; color: var(--text-mid);"></div>
     </div>
 
+    <!-- MESSAGE NOTIFICATIONS SETUP -->
+    <div class="predict-card" style="background: var(--violet-soft); border: 1px solid var(--violet-dim);">
+      <div style="font-weight: 600; margin-bottom: 8px;">📱 Get alerts via messages</div>
+      <div style="font-size: 13px; color: var(--text-mid); margin-bottom: 12px;">Receive SMS alerts when you're about to overspend your prediction.</div>
+      <div style="display: flex; gap: 8px;">
+        <input id="phoneInput" type="tel" placeholder="+254 7XX XXX XXX" style="flex: 1; padding: 8px 12px; border: 1px solid var(--text-dim); border-radius: 6px; font-size: 13px;" />
+        <button id="setupMessaging" class="btn-save" style="white-space: nowrap;">Enable SMS</button>
+      </div>
+      <div id="messagingStatus" style="margin-top: 8px; font-size: 12px; color: var(--text-mid);"></div>
+    </div>
+
     <!-- LIVE TRACKING VS PREDICTION -->
     <div class="live-card">
       <div class="live-top">
@@ -60,14 +71,32 @@
       </div>
     </div>
 
+    <!-- NEW CUSTOM PREDICTION -->
+    <div class="sec-head">
+      <div class="sec-title">Create a new prediction</div>
+    </div>
+
+    <div class="predict-card">
+      <div class="predict-q">Plan ahead: set a weekly budget for a future week</div>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <label style="font-size: 13px;">Week of:</label>
+        <input id="customWeekDate" type="date" style="padding: 6px 10px; border: 1px solid var(--text-dim); border-radius: 4px; font-size: 13px;" />
+      </div>
+      <div class="predict-input-row">
+        <div class="predict-input"><span class="prefix">Ksh</span><input id="customAmount" type="text" placeholder="0" /></div>
+        <button id="createCustomPrediction" class="btn-save">Create</button>
+      </div>
+      <div id="customPredictionMessage" style="margin-top: 8px; font-size: 13px; color: var(--text-mid);"></div>
+    </div>
+
     <!-- REVIEW HISTORY -->
     <div class="sec-head">
-      <div class="sec-title">Past reviews</div>
+      <div class="sec-title">All predictions</div>
     </div>
 
     <div id="postedPredictionsContainer"></div>
 
-    <div class="review-card">
+    <div class="review-card" style="display: none;">
       <div class="review-top">
         <span class="review-week">Jul 13 – Jul 19</span>
         <span class="review-verdict verdict-good">Nailed it 🎯</span>

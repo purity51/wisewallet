@@ -28,8 +28,8 @@ const DEFAULT_USER = {
   ],
   prediction: { amount: 15000, locked: false },
   postedPredictions: [],
-  avatar: '',
-  provider: 'Google'
+  messagingPhone: null,
+  messagingEnabled: false,
 };
 
 function loadUsers() {
@@ -493,7 +493,7 @@ function renderPostedPredictions(user) {
     const verdictEmoji = isOver ? '📈' : '✅';
     const verdictStyle = isOver ? 'var(--coral)' : 'var(--mint)';
     return `
-      <div class="review-card" style="opacity: 0.9;">
+      <div class="review-card" style="opacity: 0.9; cursor: pointer;" onclick="alert('Prediction for ' + '${pred.weekRange}' + ':\\n\\nTarget: Ksh ' + '${formatCurrency(pred.amount)}' + '\\nSpent: Ksh ' + '${formatCurrency(spent)}' + '\\nStatus: ' + '${verdict}')">
         <div class="review-top">
           <span class="review-week">${pred.weekRange}</span>
           <span class="review-verdict" style="background: ${verdictStyle}20; color: ${verdictStyle};">${verdictEmoji} ${verdict}</span>
@@ -645,6 +645,20 @@ function renderProfile(user) {
 }
 
 
+function sendSMSAlert(user, message) {
+  if (!user.messagingEnabled || !user.messagingPhone) return;
+  console.log(`[SMS to ${user.messagingPhone}] ${message}`);
+  try {
+    const maxChars = 160;
+    const trimmed = message.substring(0, maxChars);
+    if (window.Cordova) {
+      window.plugins.sms.send(user.messagingPhone, trimmed);
+    }
+  } catch (error) {
+    console.log('SMS not yet available — would send: ' + message);
+  }
+}
+
 function checkAndShowOverspendAlert(user) {
   const spent = getTransactionSummary(user).spent;
   const prediction = user.prediction.amount || 15000;
@@ -670,8 +684,10 @@ function checkAndShowOverspendAlert(user) {
 
   if (isOverspent) {
     const overage = spent - prediction;
-    alertContainer.textContent = `⚠️ Caution: You've overspent by Ksh ${formatCurrency(overage)} against your Ksh ${formatCurrency(prediction)} prediction.`;
+    const msg = `⚠️ Caution: You've overspent by Ksh ${formatCurrency(overage)} against your Ksh ${formatCurrency(prediction)} prediction.`;
+    alertContainer.textContent = msg;
     alertContainer.style.display = 'block';
+    sendSMSAlert(user, msg);
   } else {
     alertContainer.style.display = 'none';
   }
