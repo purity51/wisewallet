@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise Wallet — Goals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/app.css">
+<script src="static/app.js" defer></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="topnav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Wise Wallet</a>
+    <nav class="nav-links">
+      <a href="dashboard.html"><span class="nav-ico">📊</span><span class="label">Dashboard</span></a>
+      <a href="transactions.html"><span class="nav-ico">🧾</span><span class="label">Transactions</span></a>
+      <a href="goals.html" class="active"><span class="nav-ico">🎯</span><span class="label">Goals</span></a>
+      <a href="profile.html"><span class="nav-ico">👤</span><span class="label">Profile</span></a>
+    </nav>
+    <div class="topnav-avatar">P</div>
+  </header>
+
+  <div class="page">
+    <div class="page-head">
+      <div class="eyebrow">3 active goals</div>
+      <h1 class="page-title">Goals</h1>
+    </div>
+
+    <div class="goal-card">
+      <div class="goal-ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle class="goal-ring-bg" cx="32" cy="32" r="27"/>
+          <circle class="goal-ring-fg" cx="32" cy="32" r="27" stroke="#3DDC97"
+            stroke-dasharray="170" stroke-dashoffset="42"/>
+        </svg>
+        <div class="goal-ring-pct">75%</div>
+      </div>
+      <div class="goal-mid">
+        <div class="goal-name">Emergency Fund</div>
+        <div class="goal-amt"><b>Ksh 37,500</b> of 50,000</div>
+        <span class="goal-eta">~2 months left at current pace</span>
+      </div>
+    </div>
+
+    <div class="goal-card">
+      <div class="goal-ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle class="goal-ring-bg" cx="32" cy="32" r="27"/>
+          <circle class="goal-ring-fg" cx="32" cy="32" r="27" stroke="#8B6CFF"
+            stroke-dasharray="170" stroke-dashoffset="102"/>
+        </svg>
+        <div class="goal-ring-pct">40%</div>
+      </div>
+      <div class="goal-mid">
+        <div class="goal-name">New Laptop</div>
+        <div class="goal-amt"><b>Ksh 32,000</b> of 80,000</div>
+        <span class="goal-eta">~5 months left at current pace</span>
+      </div>
+    </div>
+
+    <div class="goal-card">
+      <div class="goal-ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle class="goal-ring-bg" cx="32" cy="32" r="27"/>
+          <circle class="goal-ring-fg" cx="32" cy="32" r="27" stroke="#F5A623"
+            stroke-dasharray="170" stroke-dashoffset="144"/>
+        </svg>
+        <div class="goal-ring-pct">15%</div>
+      </div>
+      <div class="goal-mid">
+        <div class="goal-name">Zanzibar Trip</div>
+        <div class="goal-amt"><b>Ksh 9,000</b> of 60,000</div>
+        <span class="goal-eta">Behind pace — add Ksh 4,200/mo</span>
+      </div>
+    </div>
+
+    <button class="add-goal-btn">＋ Create a new goal</button>
+  </div>
+
+</div>
+</body>
+</html>

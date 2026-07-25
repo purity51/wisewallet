@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise Wallet — Transactions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/app.css">
+<script src="static/app.js" defer></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="topnav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Wise Wallet</a>
+    <nav class="nav-links">
+      <a href="dashboard.html"><span class="nav-ico">📊</span><span class="label">Dashboard</span></a>
+      <a href="transactions.html" class="active"><span class="nav-ico">🧾</span><span class="label">Transactions</span></a>
+      <a href="goals.html"><span class="nav-ico">🎯</span><span class="label">Goals</span></a>
+      <a href="profile.html"><span class="nav-ico">👤</span><span class="label">Profile</span></a>
+    </nav>
+    <div class="topnav-avatar">P</div>
+  </header>
+
+  <div class="page">
+    <div class="page-head">
+      <div class="eyebrow">86 this month</div>
+      <h1 class="page-title">Transactions</h1>
+    </div>
+
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="search" placeholder="Search transactions" aria-label="Search transactions" />
+    </div>
+    <div class="filter-row">
+      <div class="filter-chip active">All</div>
+      <div class="filter-chip">Essential</div>
+      <div class="filter-chip">Impulse</div>
+      <div class="filter-chip">Recurring</div>
+      <div class="filter-chip">Income</div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title"><span class="ico" style="background:var(--violet-soft);">📥</span>Import M-PESA transactions</div>
+      <div class="field">
+        <label>Paste your M-PESA SMS / statement text</label>
+        <div class="field-input"><textarea id="mpesaText" rows="4" placeholder="Paste M-PESA messages here"></textarea></div>
+      </div>
+      <button id="parseMpesa" class="btn-save">Parse M-PESA activity</button>
+      <div class="field" id="mpesaMessage" style="margin-top:12px; color:var(--text-mid); font-size:13px;"></div>
+    </div>
+
+    <div id="transactionsContainer"></div>
+  </div>
+
+</div>
+</body>
+</html>

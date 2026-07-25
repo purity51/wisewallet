@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise Wallet — Weekly Predictions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/app.css">
+<script src="static/app.js" defer></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="topnav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Wise Wallet</a>
+    <nav class="nav-links">
+      <a href="dashboard.html"><span class="nav-ico">📊</span><span class="label">Dashboard</span></a>
+      <a href="transactions.html"><span class="nav-ico">🧾</span><span class="label">Transactions</span></a>
+      <a href="goals.html"><span class="nav-ico">🎯</span><span class="label">Goals</span></a>
+      <a href="profile.html"><span class="nav-ico">👤</span><span class="label">Profile</span></a>
+    </nav>
+    <div class="topnav-avatar">P</div>
+  </header>
+
+  <div class="page">
+    <div class="back-row"><a href="dashboard.html">← Dashboard</a></div>
+    <div class="page-head">
+      <div class="eyebrow">Predict it, then answer for it</div>
+      <h1 class="page-title">Weekly Predictions</h1>
+    </div>
+
+    <!-- THIS WEEK'S PREDICTION -->
+    <div class="predict-card">
+      <div class="predict-week" id="currentWeek">Mon Jul 20 – Sun Jul 26</div>
+      <div class="predict-q">How much do you think you'll spend this week?</div>
+      <div class="predict-input-row">
+        <div class="predict-input"><span class="prefix">Ksh</span><input id="predictionInput" type="text" value="15,000" /></div>
+        <button id="lockPrediction" class="btn-lock">Lock it in</button>
+      </div>
+      <div class="predict-hint" id="predictionHint">Locked predictions can't be edited once the week starts — that's the point 😂</div>
+      <div class="prediction-warning" id="predictionWarning"></div>
+      <button id="postPrediction" class="btn-save" style="margin-top: 12px; width: 100%;">Post prediction for the week</button>
+      <div id="postMessage" style="margin-top: 8px; font-size: 13px; color: var(--text-mid);"></div>
+    </div>
+
+    <!-- LIVE TRACKING VS PREDICTION -->
+    <div class="live-card">
+      <div class="live-top">
+        <span class="live-label" id="liveLabel">Tracking against your Ksh 15,000 prediction</span>
+        <span class="live-days" id="liveDays">Day 4 of 7</span>
+      </div>
+      <div class="live-track">
+        <div class="live-fill" style="width:61%;"></div>
+        <div class="live-marker" style="left:57%;"></div>
+      </div>
+      <div class="live-bottom">
+        <span>Spent: <b>9,150</b></span>
+        <span>Predicted pace: <b>8,570</b></span>
+      </div>
+    </div>
+
+    <!-- REVIEW HISTORY -->
+    <div class="sec-head">
+      <div class="sec-title">Past reviews</div>
+    </div>
+
+    <div id="postedPredictionsContainer"></div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <span class="review-week">Jul 13 – Jul 19</span>
+        <span class="review-verdict verdict-good">Nailed it 🎯</span>
+      </div>
+      <div class="review-nums">
+        <div class="review-num"><div class="review-num-label">Predicted</div><div class="review-num-val">14,000</div></div>
+        <div class="review-num"><div class="review-num-label">Actual</div><div class="review-num-val">14,320</div></div>
+        <div class="review-num"><div class="review-num-label">Off by</div><div class="review-num-val" style="color:var(--mint);">2%</div></div>
+      </div>
+      <div class="review-bar-track"><div class="review-bar-fill" style="width:96%; background:var(--mint);"></div></div>
+      <div class="review-note">Barely missed it — dining was a little over, transport made up for it.</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <span class="review-week">Jul 6 – Jul 12</span>
+        <span class="review-verdict verdict-over">Overspent 😬</span>
+      </div>
+      <div class="review-nums">
+        <div class="review-num"><div class="review-num-label">Predicted</div><div class="review-num-val">12,000</div></div>
+        <div class="review-num"><div class="review-num-label">Actual</div><div class="review-num-val">16,480</div></div>
+        <div class="review-num"><div class="review-num-label">Off by</div><div class="review-num-val" style="color:var(--coral);">+37%</div></div>
+      </div>
+      <div class="review-bar-track"><div class="review-bar-fill" style="width:100%; background:var(--coral);"></div></div>
+      <div class="review-note">Zara run on Jul 8 alone was Ksh 6,400 — that's what blew the prediction.</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <span class="review-week">Jun 29 – Jul 5</span>
+        <span class="review-verdict verdict-under">Underspent 👀</span>
+      </div>
+      <div class="review-nums">
+        <div class="review-num"><div class="review-num-label">Predicted</div><div class="review-num-val">18,000</div></div>
+        <div class="review-num"><div class="review-num-label">Actual</div><div class="review-num-val">11,900</div></div>
+        <div class="review-num"><div class="review-num-label">Off by</div><div class="review-num-val" style="color:var(--violet);">−34%</div></div>
+      </div>
+      <div class="review-bar-track"><div class="review-bar-fill" style="width:66%; background:var(--violet);"></div></div>
+      <div class="review-note">Solid week — worth moving the extra Ksh 6,100 straight into a goal.</div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-ico">🎙️</div>
+      <div class="insight-text">
+        <b>4-week streak</b> of predicting within 25% — your gut feel for your own spending is getting sharper.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

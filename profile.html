@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wise Wallet — Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/app.css">
+<script src="static/app.js" defer></script>
+</head>
+<body>
+<div class="app">
+
+  <header class="topnav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Wise Wallet</a>
+    <nav class="nav-links">
+      <a href="dashboard.html"><span class="nav-ico">📊</span><span class="label">Dashboard</span></a>
+      <a href="transactions.html"><span class="nav-ico">🧾</span><span class="label">Transactions</span></a>
+      <a href="goals.html"><span class="nav-ico">🎯</span><span class="label">Goals</span></a>
+      <a href="profile.html" class="active"><span class="nav-ico">👤</span><span class="label">Profile</span></a>
+    </nav>
+    <div class="topnav-avatar">P</div>
+  </header>
+
+  <div class="page">
+    <div class="profile-head">
+      <div class="avatar-upload-wrap">
+        <div class="profile-avatar" id="avatarDisplay">P</div>
+        <label for="avatarInput" class="avatar-edit-btn">📷</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)" />
+      </div>
+      <div class="profile-name" id="profileName">Pixel</div>
+      <div class="profile-sub" id="profileSub">Member since Jan 2026</div>
+      <div class="signin-pill" id="profileSignin">🔵 Signed in with Google · pixel@gmail.com</div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="pstat"><div class="pstat-val" id="profileTransactionCount">86</div><div class="pstat-label">Transactions</div></div>
+      <div class="pstat"><div class="pstat-val" id="profileSavingsRate">18%</div><div class="pstat-label">Savings Rate</div></div>
+      <div class="pstat"><div class="pstat-val" id="profileGoalsCount">3</div><div class="pstat-label">Active Goals</div></div>
+    </div>
+
+    <div class="settings-group-label">Account</div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--violet-soft);">👤</div>
+        <div class="settings-label">Personal details</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-ico" style="background:#4285F41f;">🔵</div>
+        <div class="settings-label">Sign-in method — Google</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--mint-soft);">🔗</div>
+        <div class="settings-label">Linked accounts & SMS sync</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <a href="recurring.html" class="settings-row" style="text-decoration:none; color:inherit;">
+        <div class="settings-ico" style="background:var(--amber-soft);">🎯</div>
+        <div class="settings-label">Fixed income & expenses</div>
+        <div class="settings-chevron">›</div>
+      </a>
+      <a href="predictions.html" class="settings-row" style="text-decoration:none; color:inherit;">
+        <div class="settings-ico" style="background:var(--violet-soft);">📅</div>
+        <div class="settings-label">Weekly predictions</div>
+        <div class="settings-chevron">›</div>
+      </a>
+    </div>
+
+    <div class="settings-group-label">Preferences</div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--coral-soft);">🔔</div>
+        <div class="settings-label">Notifications</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--violet-soft);">🌙</div>
+        <div class="settings-label">Appearance</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--mint-soft);">🔒</div>
+        <div class="settings-label">Privacy & security</div>
+        <div class="settings-chevron">›</div>
+      </div>
+    </div>
+
+    <div class="settings-group-label">Support</div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-ico" style="background:var(--amber-soft);">❓</div>
+        <div class="settings-label">Help center</div>
+        <div class="settings-chevron">›</div>
+      </div>
+      <a href="login.html" class="settings-row" style="text-decoration:none; color:inherit;">
+        <div class="settings-ico" style="background:var(--coral-soft);">🚪</div>
+        <div class="settings-label">Log out</div>
+        <div class="settings-chevron">›</div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function previewAvatar(event){
+      const file = event.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        const el = document.getElementById('avatarDisplay');
+        el.style.backgroundImage = `url(${e.target.result})`;
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+        el.textContent = '';
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+
+</div>
+</body>
+</html>
