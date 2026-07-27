@@ -471,6 +471,53 @@ function renderTransactions(user) {
   updateFilter();
 }
 
+const BACKEND_URL = 'http://localhost:3001';
+
+async function registerPhoneForSMS(user, phone) {
+  try {
+    const response = await fetch(`${BACKEND_URL}/register-phone`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id, phone })
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('[SMS Register Error]', error);
+    return { error: error.message };
+  }
+}
+
+async function fetchSMSTransactions(phone) {
+  try {
+    const response = await fetch(`${BACKEND_URL}/transactions/${encodeURIComponent(phone)}`);
+    const data = await response.json();
+    return data.transactions || [];
+  } catch (error) {
+    console.error('[SMS Fetch Error]', error);
+    return [];
+  }
+}
+
+function pollForSMSTransactions(user, intervalMs = 30000) {
+  if (!user.messagingEnabled || !user.messagingPhone) return;
+
+  const pollInterval = setInterval(async () => {
+    const transactions = await fetchSMSTransactions(user.messagingPhone);
+    if (transactions && transactions.length > 0) {
+      console.log(`[SMS Poll] Fetched ${transactions.length} SMS transactions`);
+      user.transactions = [...transactions, ...user.transactions];
+      saveCurrentUser(user);
+      renderTransactions(user);
+      renderDashboard(user);
+      renderPredictions(user);
+      checkAndShowOverspendAlert(user);
+    }
+  }, intervalMs);
+
+  return pollInterval;
+}
+
 function renderPredictions(user) {
   const predictionInput = document.getElementById('predictionInput');
   const lockButton = document.getElementById('lockPrediction');
@@ -554,6 +601,57 @@ function renderPredictions(user) {
   if (postButton) {
     postButton.onclick = postPrediction;
   }
+
+  // SMS Setup
+  const phoneInput = document.getElementById('phoneInput');
+  const setupMessaging = document.getElementById('setupMessaging');
+  const messagingStatus = document.getElementById('messagingStatus');
+
+  const updateMessagingStatus = () => {
+    if (messagingStatus) {
+      if (user.messagingEnabled && user.messagingPhone) {
+        messagingStatus.textContent = `✓ SMS enabled for ${user.messagingPhone}. Forwarding M-PESA messages now.`;
+        messagingStatus.style.color = 'var(--mint)';
+        if (setupMessaging) {
+          setupMessaging.textContent = 'SMS Enabled';
+          setupMessaging.disabled = true;
+        }
+        if (phoneInput) phoneInput.value = user.messagingPhone;
+      } else {
+        messagingStatus.textContent = '';
+      }
+    }
+  };
+
+  if (setupMessaging) {
+    setupMessaging.onclick = async () => {
+      const phone = phoneInput?.value.trim();
+      if (!phone) {
+        messagingStatus.textContent = '⚠️ Please enter your phone number.';
+        messagingStatus.style.color = 'var(--coral)';
+        return;
+      }
+      messagingStatus.textContent = '⏳ Registering...';
+      messagingStatus.style.color = 'var(--text-mid)';
+      const result = await registerPhoneForSMS(user, phone);
+      if (result.error) {
+        messagingStatus.textContent = `❌ Error: ${result.error}`;
+        messagingStatus.style.color = 'var(--coral)';
+      } else {
+        user.messagingEnabled = true;
+        user.messagingPhone = phone;
+        saveCurrentUser(user);
+        messagingStatus.textContent = `✓ Phone ${phone} registered! M-PESA messages will auto-import.`;
+        messagingStatus.style.color = 'var(--mint)';
+        setupMessaging.textContent = 'SMS Enabled';
+        setupMessaging.disabled = true;
+        pollForSMSTransactions(user, 30000);
+        console.log('[SMS] Polling started for phone:', phone);
+      }
+    };
+  }
+
+  updateMessagingStatus();
   updatePrediction();
 }
 
@@ -784,6 +882,14 @@ function initializePage() {
   renderRecurring(user);
   renderProfile(user);
   checkAndShowOverspendAlert(user);
+
+  // Start SMS polling if enabled
+  if (user.messagingEnabled && user.messagingPhone) {
+    const pollInterval = pollForSMSTransactions(user, 30000);
+    // Store it so we can clear it later if needed
+    window.smsPollInterval = pollInterval;
+    console.log('[SMS] Auto-polling started on page load');
+  }
 }
 
 window.addEventListener('DOMContentLoaded', initializePage);
