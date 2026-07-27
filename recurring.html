@@ -34,23 +34,23 @@
     <div class="summary-card">
       <div class="summary-row">
         <span class="summary-label">Monthly income</span>
-        <span id="summaryIncome" class="summary-val pos">+ 85,000</span>
+        <span id="summaryIncome" class="summary-val pos">+ —</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Fixed expenses (rent, etc.)</span>
-        <span id="summaryFixed" class="summary-val neg">− 25,000</span>
+        <span id="summaryFixed" class="summary-val neg">− —</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Rent</span>
-        <span id="summaryRent" class="summary-val neg">− 20,000</span>
+        <span id="summaryRent" class="summary-val neg">− —</span>
       </div>
       <div class="summary-row">
         <span class="summary-label">Spent so far this month</span>
-        <span class="summary-val neg">− 40,850</span>
+        <span class="summary-val neg">− —</span>
       </div>
       <div class="summary-row total">
         <span class="summary-label">Free to spend</span>
-        <span id="summaryFree" class="summary-val pos">Ksh 19,150</span>
+        <span id="summaryFree" class="summary-val pos">Ksh —</span>
       </div>
     </div>
 
@@ -63,11 +63,11 @@
       </div>
       <div class="field">
         <label>Amount</label>
-        <div class="field-input"><span class="prefix">Ksh</span><input id="incomeAmount" type="text" value="85,000" /></div>
+        <div class="field-input"><span class="prefix">Ksh</span><input id="incomeAmount" type="text" value="" /></div>
       </div>
       <div class="field">
         <label>Rent</label>
-        <div class="field-input"><span class="prefix">Ksh</span><input id="rentAmount" type="text" value="20,000" /></div>
+        <div class="field-input"><span class="prefix">Ksh</span><input id="rentAmount" type="text" value="" /></div>
       </div>
       <div class="field">
         <label>Frequency</label>
@@ -104,30 +104,7 @@
       <div class="sec-title">Your fixed expenses</div>
     </div>
     <div class="cat-card" id="fixedExpensesList">
-      <div class="fixed-list-row">
-        <div class="fixed-ico" style="background:var(--coral-soft);">🏠</div>
-        <div class="fixed-mid">
-          <div class="fixed-name">Rent</div>
-          <div class="fixed-due">Due 1st of every month</div>
-        </div>
-        <div class="fixed-amt">20,000</div>
-      </div>
-      <div class="fixed-list-row">
-        <div class="fixed-ico" style="background:var(--violet-soft);">📶</div>
-        <div class="fixed-mid">
-          <div class="fixed-name">Safaricom Postpaid</div>
-          <div class="fixed-due">Due 5th of every month</div>
-        </div>
-        <div class="fixed-amt">3,000</div>
-      </div>
-      <div class="fixed-list-row">
-        <div class="fixed-ico" style="background:var(--amber-soft);">💡</div>
-        <div class="fixed-mid">
-          <div class="fixed-name">Electricity (avg)</div>
-          <div class="fixed-due">Due 10th of every month</div>
-        </div>
-        <div class="fixed-amt">2,000</div>
-      </div>
+      <div class="empty-state">No fixed expenses yet. Add one to start tracking your budget.</div>
     </div>
 
     <div class="insight">

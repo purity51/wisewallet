@@ -6,21 +6,9 @@ const DEFAULT_USER = {
   name: 'Pixel',
   email: 'pixel@demo.com',
   memberSince: 'Jan 2026',
-  income: 85000,
-  fixedExpenses: [
-    { id: 'rent', name: 'Rent', amount: 20000, due: '1st of every month' },
-    { id: 'postpaid', name: 'Safaricom Postpaid', amount: 3000, due: '5th of every month' },
-    { id: 'electricity', name: 'Electricity (avg)', amount: 2000, due: '10th of every month' }
-  ],
-  transactions: [
-    { id: 't1', date: '2026-07-24', name: 'Java House', meta: '08:42 AM · Dining', category: 'impulse', type: 'expense', amount: -450 },
-    { id: 't2', date: '2026-07-24', name: 'Naivas Supermarket', meta: '07:10 AM · Groceries', category: 'essential', type: 'expense', amount: -2180 },
-    { id: 't3', date: '2026-07-23', name: 'Safaricom Postpaid', meta: '6:00 PM · Bills', category: 'recurring', type: 'expense', amount: -1500 },
-    { id: 't4', date: '2026-07-23', name: 'Uber', meta: '2:15 PM · Transport', category: 'essential', type: 'expense', amount: -620 },
-    { id: 't5', date: '2026-07-21', name: 'Salary — TechCorp Ltd', meta: '9:00 AM · Income', category: 'income', type: 'income', amount: 85000 },
-    { id: 't6', date: '2026-07-21', name: 'Zara — Two Rivers', meta: '4:40 PM · Shopping', category: 'impulse', type: 'expense', amount: -6400 },
-    { id: 't7', date: '2026-07-21', name: 'Artcaffé', meta: '1:05 PM · Dining', category: 'impulse', type: 'expense', amount: -3140 }
-  ],
+  income: 0,
+  fixedExpenses: [],
+  transactions: [],
   goals: [
     { id: 'g1', name: 'Emergency Fund', current: 37500, target: 50000 },
     { id: 'g2', name: 'New Laptop', current: 32000, target: 80000 },
@@ -83,9 +71,45 @@ function formatCurrency(value) {
 
 function parseAmountText(text) {
   if (!text) return 0;
-  const cleaned = text.replace(/,/g, '').match(/[-+]?\d+/g);
+  const cleaned = text.replace(/,/g, '').match(/[-+]?\d+(?:\.\d+)?/g);
   if (!cleaned) return 0;
-  return Number(cleaned.join('')) || 0;
+  return Math.round(Number(cleaned.join('')) || 0);
+}
+
+function parseMpesaDate(line) {
+  const isoDate = new Date().toISOString().slice(0, 10);
+  const dateMatch = line.match(/(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/);
+  if (!dateMatch) return isoDate;
+  const parts = dateMatch[1].split(/[/\-]/).map(Number);
+  if (parts.length !== 3) return isoDate;
+  const [a, b, c] = parts;
+  const year = c < 100 ? 2000 + c : c;
+  const month = a > 12 ? b : a;
+  const day = a > 12 ? a : b;
+  const parsed = new Date(year, month - 1, day);
+  return Number.isNaN(parsed.getTime()) ? isoDate : parsed.toISOString().slice(0, 10);
+}
+
+function parseMpesaTime(line) {
+  const timeMatch = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
+  return timeMatch ? timeMatch[1].toUpperCase() : '';
+}
+
+function parseMpesaDescription(line) {
+  const placeMatch = line.match(/(?:to|from)\s+([A-Za-z0-9&@#\-\.\s]{3,40})(?=\s|$)/i);
+  if (placeMatch) return placeMatch[1].trim();
+  const nameMatch = line.match(/(?:received|credited|sent|paid|withdrawn|deposit)\s+.*?(?:to|from)?\s*([A-Za-z0-9&@#\-\.\s]{3,40})/i);
+  if (nameMatch) return nameMatch[1].trim();
+  return line.slice(0, 28).trim();
+}
+
+function parseMpesaCategory(line, isIncome) {
+  const lower = line.toLowerCase();
+  if (isIncome) return 'income';
+  if (/rent|postpaid|electricity|bill|subscription|insurance|loan|stationery/.test(lower)) return 'recurring';
+  if (/grocer|supermarket|pharm|fuel|transport|taxi|uber|bus|matatu|market/.test(lower)) return 'essential';
+  if (/shop|mall|coffee|dining|restaurant|bar|movie|entertainment|amazon|jiji|shopping|purchase/.test(lower)) return 'impulse';
+  return 'essential';
 }
 
 function getFixedExpensesTotal(user) {
@@ -227,10 +251,35 @@ function renderDashboard(user) {
 
   const summary = getTransactionSummary(user);
   const budgetInfo = getBudgetStatus(user);
+  const hasIncome = Number(user.income) > 0;
+
+  const salaryEl = document.getElementById('dashboardSalary');
+  const fixedCostsEl = document.getElementById('dashboardFixedCosts');
+
+  if (!hasIncome) {
+    if (amountEl) amountEl.textContent = '—';
+    if (budgetEl) budgetEl.textContent = '';
+    if (remainingEl) remainingEl.textContent = '—';
+    if (salaryEl) salaryEl.textContent = '—';
+    if (fixedCostsEl) fixedCostsEl.textContent = '—';
+    if (spentEl) spentEl.textContent = '—';
+    if (txCountEl) txCountEl.textContent = summary.count.toString();
+    if (savingsEl) savingsEl.textContent = '--';
+    if (statusEl) statusEl.textContent = 'Enter your income on Fixed Income & Expenses to view your budget.';
+    if (insightEl) insightEl.textContent = 'Your dashboard will update after you add income and transactions.';
+    if (topCats) topCats.innerHTML = '';
+    const recentContainer = document.getElementById('dashboardRecentTransactions');
+    if (recentContainer) {
+      recentContainer.innerHTML = '<div class="empty-state">No transactions yet. Add your first transaction after entering income.</div>';
+    }
+    return;
+  }
 
   if (amountEl) amountEl.textContent = `Ksh ${formatCurrency(summary.spent)}`;
   if (budgetEl) budgetEl.textContent = `/ ${formatCurrency(budgetInfo.budget)}`;
   if (remainingEl) remainingEl.textContent = `${formatCurrency(budgetInfo.remaining)}`;
+  if (salaryEl) salaryEl.textContent = formatCurrency(user.income);
+  if (fixedCostsEl) fixedCostsEl.textContent = formatCurrency(budgetInfo.fixed);
   if (spentEl) spentEl.textContent = `${formatCurrency(summary.spent)}`;
   if (txCountEl) txCountEl.textContent = summary.count.toString();
   if (savingsEl) savingsEl.textContent = `${budgetInfo.savingsRate}%`;
@@ -261,6 +310,32 @@ function renderDashboard(user) {
         </div>
       `;
     }).join('');
+  }
+
+  const recentContainer = document.getElementById('dashboardRecentTransactions');
+  if (recentContainer) {
+    if (!user.transactions || user.transactions.length === 0) {
+      recentContainer.innerHTML = '<div class="empty-state">No recent transactions yet. Add one in Transactions.</div>';
+    } else {
+      const recent = [...user.transactions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+      recentContainer.innerHTML = recent.map(tx => {
+        const sign = tx.amount >= 0 ? '+' : '−';
+        const amount = formatCurrency(tx.amount);
+        const positive = tx.amount >= 0;
+        const category = tx.category || 'expense';
+        return `
+          <div class="tx-row">
+            <div class="tx-ico">${positive ? '💰' : '💸'}</div>
+            <div class="tx-mid">
+              <div class="tx-name">${tx.name}</div>
+              <div class="tx-meta">${tx.meta}</div>
+              <span class="tx-tag tag-${category}">${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+            </div>
+            <div class="tx-amt" style="color:${positive ? 'var(--mint)' : 'inherit'}">${sign} ${amount}</div>
+          </div>
+        `;
+      }).join('');
+    }
   }
 }
 
@@ -356,18 +431,23 @@ function renderTransactions(user) {
       const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
       const newTransactions = [];
       lines.forEach((line, index) => {
-        const amountMatch = line.match(/Ksh\s*([\d,]+)/i);
+        const amountMatch = line.match(/(?:Ksh|KES|KSh|sh|\bK\s*sh\b)\s*([\d,]+(?:\.\d+)?)/i);
         if (!amountMatch) return;
         const amount = parseAmountText(amountMatch[1]);
-        const isIncome = /received|credited|paid to you|deposit/i.test(line);
-        const category = isIncome ? 'income' : /rent|loan|rent/i.test(line) ? 'recurring' : /fuel|shopping|dining|transfer|pay|purchase|withdrawn|sent/i.test(line) ? 'impulse' : 'essential';
-        const descriptionMatch = line.match(/(?:to|from)\s+([A-Za-z0-9 ]+)/i);
-        const description = descriptionMatch ? descriptionMatch[1].trim() : line.slice(0, 24);
+        if (!amount) return;
+        const isIncome = /received|credited|paid to you|deposit|salary|pension|refund|cashback/i.test(line);
+        const category = parseMpesaCategory(line, isIncome);
+        const description = parseMpesaDescription(line);
+        const txDate = parseMpesaDate(line);
+        const time = parseMpesaTime(line);
+        const metaParts = [];
+        if (time) metaParts.push(time);
+        metaParts.push(isIncome ? 'Income' : 'Imported');
         newTransactions.push({
           id: `mpesa_${Date.now()}_${index}`,
-          date: new Date().toISOString().slice(0, 10),
+          date: txDate,
           name: description,
-          meta: 'Imported from M-PESA',
+          meta: metaParts.join(' · '),
           category,
           type: isIncome ? 'income' : 'expense',
           amount: isIncome ? amount : -amount
@@ -534,10 +614,10 @@ function renderRecurring(user) {
     const fixedTotal = getFixedExpensesTotal(user);
     const spent = getTransactionSummary(user).spent;
     const free = Math.max(0, incomeValue - fixedTotal - spent);
-    if (summaryIncome) summaryIncome.textContent = `+ ${formatCurrency(incomeValue)}`;
-    if (summaryFixed) summaryFixed.textContent = `− ${formatCurrency(fixedTotal)}`;
-    if (summaryRent) summaryRent.textContent = `− ${formatCurrency(rentValue)}`;
-    if (summaryFree) summaryFree.textContent = `Ksh ${formatCurrency(free)}`;
+    if (summaryIncome) summaryIncome.textContent = incomeValue > 0 ? `+ ${formatCurrency(incomeValue)}` : '+ —';
+    if (summaryFixed) summaryFixed.textContent = fixedTotal > 0 ? `− ${formatCurrency(fixedTotal)}` : '− —';
+    if (summaryRent) summaryRent.textContent = rentValue > 0 ? `− ${formatCurrency(rentValue)}` : '− —';
+    if (summaryFree) summaryFree.textContent = incomeValue > 0 ? `Ksh ${formatCurrency(free)}` : 'Ksh —';
     saveCurrentUser(user);
   };
 
@@ -555,8 +635,8 @@ function renderRecurring(user) {
     `).join('');
   };
 
-  if (incomeAmount) incomeAmount.value = user.income.toString();
-  if (rentAmount) rentAmount.value = rent.amount.toString();
+  if (incomeAmount) incomeAmount.value = user.income > 0 ? user.income.toString() : '';
+  if (rentAmount) rentAmount.value = rent.amount > 0 ? rent.amount.toString() : '';
   renderExpenses();
   updateSummary();
 

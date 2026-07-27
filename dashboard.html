@@ -48,12 +48,12 @@
       </div>
       <div class="hero-copy">
         <div class="label">Spent this month</div>
-        <div class="amount"><span id="dashboardAmount">Ksh 40,850</span> <span class="of" id="dashboardBudget">/ 60,000</span></div>
-        <div class="tag" id="dashboardStatus">↓ On track — 6 days left</div>
+        <div class="amount"><span id="dashboardAmount">—</span> <span class="of" id="dashboardBudget"></span></div>
+        <div class="tag" id="dashboardStatus">Enter your income on Fixed Income & Expenses to view total money values.</div>
       </div>
     </div>
     <a href="recurring.html" style="display:flex; align-items:center; justify-content:space-between; background:var(--card-solid); border:1px solid var(--card-border); border-radius:16px; padding:13px 16px; margin-bottom:10px; text-decoration:none; color:var(--text-hi);">
-      <span style="font-size:13px;">💼 Salary: <b style="font-family:var(--mono);">85,000</b> · 🏠 Fixed costs: <b style="font-family:var(--mono);">25,000</b></span>
+      <span style="font-size:13px;">💼 Salary: <b id="dashboardSalary" style="font-family:var(--mono);">—</b> · 🏠 Fixed costs: <b id="dashboardFixedCosts" style="font-family:var(--mono);">—</b></span>
       <span style="color:var(--violet); font-size:12px; font-family:var(--mono);">Edit ›</span>
     </a>
     <a href="predictions.html" style="display:flex; align-items:center; justify-content:space-between; background:var(--card-solid); border:1px solid var(--card-border); border-radius:16px; padding:13px 16px; margin-bottom:16px; text-decoration:none; color:var(--text-hi);">
@@ -65,33 +65,33 @@
       <div class="stat">
         <div class="stat-icon" style="background:var(--coral-soft);">💸</div>
         <div class="stat-label">Total Spent</div>
-        <div class="stat-value" id="dashSpentValue">40,850</div>
-        <div class="stat-delta up" id="dashSpentDelta">↑ 12.4% vs last wk</div>
+        <div class="stat-value" id="dashSpentValue">—</div>
+        <div class="stat-delta up" id="dashSpentDelta">&nbsp;</div>
       </div>
       <div class="stat">
         <div class="stat-icon" style="background:var(--mint-soft);">🎯</div>
         <div class="stat-label">Remaining</div>
-        <div class="stat-value" id="dashRemainingValue">19,150</div>
-        <div class="stat-delta down" id="dashRemainingDelta">↓ 32% of budget</div>
+        <div class="stat-value" id="dashRemainingValue">—</div>
+        <div class="stat-delta down" id="dashRemainingDelta">&nbsp;</div>
       </div>
       <div class="stat">
         <div class="stat-icon" style="background:var(--violet-soft);">🧾</div>
         <div class="stat-label">Transactions</div>
-        <div class="stat-value" id="dashTransactionCount">86</div>
-        <div class="stat-delta up" id="dashTransactionDelta">↑ 9 this week</div>
+        <div class="stat-value" id="dashTransactionCount">0</div>
+        <div class="stat-delta up" id="dashTransactionDelta">&nbsp;</div>
       </div>
       <div class="stat">
         <div class="stat-icon" style="background:var(--amber-soft);">🏦</div>
         <div class="stat-label">Savings Rate</div>
-        <div class="stat-value" id="dashSavingsRate">18%</div>
-        <div class="stat-delta down" id="dashSavingsDelta">↓ 3pt vs last mo</div>
+        <div class="stat-value" id="dashSavingsRate">--</div>
+        <div class="stat-delta down" id="dashSavingsDelta">&nbsp;</div>
       </div>
     </div>
 
     <div class="insight">
       <div class="insight-ico">⚡</div>
       <div class="insight-text" id="dashboardInsightText">
-        You've spent <b>28% more on dining</b> than usual this week. At this pace you'll miss your savings goal by <b>Ksh 3,200</b>.
+        Enter your income and transactions to populate dashboard insights and spending guidance.
       </div>
     </div>
 
@@ -100,72 +100,15 @@
       <a href="transactions.html" class="sec-link">See all</a>
     </div>
     <div class="cat-card" id="dashboardTopCategories">
-      <div class="cat-row">
-        <div class="cat-ico" style="background:var(--coral-soft);">🍽️</div>
-        <div class="cat-mid">
-          <div class="cat-name">Dining & Takeout</div>
-          <div class="cat-bar-track"><div class="cat-bar-fill" style="width:82%; background:var(--coral);"></div></div>
-        </div>
-        <div class="cat-right"><div class="cat-amt">12,400</div><div class="cat-pct">30%</div></div>
-      </div>
-      <div class="cat-row">
-        <div class="cat-ico" style="background:var(--violet-soft);">🛒</div>
-        <div class="cat-mid">
-          <div class="cat-name">Groceries</div>
-          <div class="cat-bar-track"><div class="cat-bar-fill" style="width:58%; background:var(--violet);"></div></div>
-        </div>
-        <div class="cat-right"><div class="cat-amt">9,150</div><div class="cat-pct">22%</div></div>
-      </div>
-      <div class="cat-row">
-        <div class="cat-ico" style="background:var(--mint-soft);">🚗</div>
-        <div class="cat-mid">
-          <div class="cat-name">Transport</div>
-          <div class="cat-bar-track"><div class="cat-bar-fill" style="width:40%; background:var(--mint);"></div></div>
-        </div>
-        <div class="cat-right"><div class="cat-amt">6,300</div><div class="cat-pct">15%</div></div>
-      </div>
-      <div class="cat-row">
-        <div class="cat-ico" style="background:var(--amber-soft);">🧾</div>
-        <div class="cat-mid">
-          <div class="cat-name">Bills & Utilities</div>
-          <div class="cat-bar-track"><div class="cat-bar-fill" style="width:33%; background:var(--amber);"></div></div>
-        </div>
-        <div class="cat-right"><div class="cat-amt">5,000</div><div class="cat-pct">12%</div></div>
-      </div>
+      <div class="empty-state">Top categories appear after you add transactions.</div>
     </div>
 
     <div class="sec-head">
       <div class="sec-title">Recent Transactions</div>
       <a href="transactions.html" class="sec-link">See all</a>
     </div>
-    <div class="tx-card">
-      <div class="tx-row">
-        <div class="tx-ico">☕</div>
-        <div class="tx-mid">
-          <div class="tx-name">Java House</div>
-          <div class="tx-meta">Today, 08:42 AM</div>
-          <span class="tx-tag tag-impulse">Impulse</span>
-        </div>
-        <div class="tx-amt">− 450</div>
-      </div>
-      <div class="tx-row">
-        <div class="tx-ico">🛒</div>
-        <div class="tx-mid">
-          <div class="tx-name">Naivas Supermarket</div>
-          <div class="tx-meta">Today, 07:10 AM</div>
-          <span class="tx-tag tag-essential">Essential</span>
-        </div>
-        <div class="tx-amt">− 2,180</div>
-      </div>
-      <div class="tx-row">
-        <div class="tx-ico">📶</div>
-        <div class="tx-mid">
-          <div class="tx-name">Safaricom Postpaid</div>
-          <div class="tx-meta">Yesterday, 6:00 PM</div>
-          <span class="tx-tag tag-recurring">Recurring</span>
-        </div>
-        <div class="tx-amt">− 1,500</div>
-      </div>
+    <div class="tx-card" id="dashboardRecentTransactions">
+      <div class="empty-state">No recent transactions yet. Add your first one in Transactions.</div>
     </div>
   </div>
 
